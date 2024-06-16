@@ -12,6 +12,10 @@ private:
 	float bulletSpeed = 0.95f;
 	//--bullets
 
+	sf::RectangleShape boundingRect;
+
+	sf::Vector2i size; 
+	
 public:
 	sf::Sprite sprite;
 

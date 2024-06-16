@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 #include "Player.h"
 #include "Skeleton.h"
@@ -10,13 +11,14 @@ int main()
     settings.antialiasingLevel = 8;
 
     sf::RenderWindow window(sf::VideoMode(1080, 720), "GAME RPG HOWAK", sf::Style::Default,settings);
-    
+    //window.setVerticalSyncEnabled(true);
     Player player;
     player.Initialize();
 
     Skeleton skeleton;
     skeleton.Initialize();
 
+    //sf::Clock clock;
     //---------------------------------------------INITIALIZE---------------------------------------------//
 
     //----------------------------------------------LOAD--------------------------------------------------//
@@ -41,6 +43,9 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
         }
+
+        //sf::Time deltaTime = clock.restart();
+        //std::cout << deltaTime.asMilliseconds() << std::endl;
         
         //METHOD CALLING
         skeleton.Update();
