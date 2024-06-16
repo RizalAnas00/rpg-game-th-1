@@ -37,26 +37,21 @@ void Player::Load()
     }
 }
 
-void Player::Update(Skeleton& skeleton)
+void Player::Update(float deltaTime, Skeleton& skeleton)
 {
     sf::Vector2f currPosition = sprite.getPosition();
-    float speed = 0.4f; // Kecepatan default
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift)) {
-        speed += 0.3f; // Kecepatan saat Shift ditekan
-    }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::PageUp))
-        sprite.setPosition(currPosition + sf::Vector2f(0, -speed));
+        sprite.setPosition(currPosition + sf::Vector2f(0, -1) * speed * deltaTime);
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::PageDown))
-        sprite.setPosition(currPosition + sf::Vector2f(0, speed));
+        sprite.setPosition(currPosition + sf::Vector2f(0, 1) * speed * deltaTime);
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Home))
-        sprite.setPosition(currPosition + sf::Vector2f(-speed, 0));
+        sprite.setPosition(currPosition + sf::Vector2f(-1, 0) * speed * deltaTime);
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::End))
-        sprite.setPosition(currPosition + sf::Vector2f(speed, 0));
+        sprite.setPosition(currPosition + sf::Vector2f(1, 0) * speed * deltaTime);
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
         sprite.setPosition(sf::Vector2f(540, 360));
@@ -89,7 +84,7 @@ void Player::Update(Skeleton& skeleton)
         sf::Vector2f bulletDirection = skeleton.sprite.getPosition() - AllBullets[i].getPosition();
         bulletDirection = Calc::NormalizedVector(bulletDirection);
         AllBullets[i].setFillColor(sf::Color::Yellow);
-        AllBullets[i].setPosition(AllBullets[i].getPosition() + bulletDirection * bulletSpeed);
+        AllBullets[i].setPosition(AllBullets[i].getPosition() + bulletDirection * bulletSpeed * deltaTime);
 
     }
 

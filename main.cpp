@@ -11,14 +11,16 @@ int main()
     settings.antialiasingLevel = 8;
 
     sf::RenderWindow window(sf::VideoMode(1080, 720), "GAME RPG HOWAK", sf::Style::Default,settings);
-    //window.setVerticalSyncEnabled(true);
+    window.setFramerateLimit(360);
+
     Player player;
     player.Initialize();
 
     Skeleton skeleton;
     skeleton.Initialize();
 
-    //sf::Clock clock;
+    sf::Clock clock;
+
     //---------------------------------------------INITIALIZE---------------------------------------------//
 
     //----------------------------------------------LOAD--------------------------------------------------//
@@ -34,6 +36,9 @@ int main()
     //--------------------------------------UPDATE--------------------------------------------------------//
     while (window.isOpen())
     {
+        //clock----
+        sf::Time deltaTimeTimer = clock.restart();
+        float deltaTime = deltaTimeTimer.asMilliseconds();
 
         // check all the window's events that were triggered since the last iteration of the loop
         sf::Event event;
@@ -43,13 +48,10 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
         }
-
-        //sf::Time deltaTime = clock.restart();
-        //std::cout << deltaTime.asMilliseconds() << std::endl;
         
         //METHOD CALLING
-        skeleton.Update();
-        player.Update(skeleton);
+        skeleton.Update(deltaTime);
+        player.Update(deltaTime, skeleton);
 
     //---------------------------------------------UPDATE--------------------------------------------------//
 
