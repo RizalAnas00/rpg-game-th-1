@@ -3,6 +3,14 @@
 
 #include "Calc.h"
 
+Player::Player() :
+    bulletSpeed(0.5f), speed(0.2f), maxFireRate(150.0f), fireRateTimer(0.0f)
+{}
+
+Player::~Player() {
+
+}
+
 void Player::Initialize()
 {
     boundingRect.setFillColor(sf::Color::Transparent);
@@ -56,22 +64,19 @@ void Player::Update(float deltaTime, Skeleton& skeleton)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
         sprite.setPosition(sf::Vector2f(540, 360));
 
-    //rectangle--
-    boundingRect.setPosition(sprite.getPosition());
+    //------------------------------------ BULLETS SHOOTING -----------------------------------------
+    fireRateTimer += deltaTime;
+    std::cout << fireRateTimer << std::endl;
 
-    if (Calc::CheckIsCollision(sprite.getGlobalBounds(), skeleton.sprite.getGlobalBounds())) 
-    {
-        std::cout << "COLLISION DETECTED" << std::endl;
-    }
-
-    //BULLETS SHOOTING-----
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && fireRateTimer >= maxFireRate)
     {
         AllBullets.push_back(sf::RectangleShape(sf::Vector2f(30, 15)));
 
         //bullets postion
         int i = AllBullets.size() - 1;
         AllBullets[i].setPosition(sprite.getPosition());
+
+        fireRateTimer = 0;
 
         //Use This if u want the bullets dont follow the enemy
         //sf::Vector2f bulletDirection (move this outside loop window) = skeletonSprite.getPosition() - AllBullets[i].getPosition();
@@ -86,7 +91,16 @@ void Player::Update(float deltaTime, Skeleton& skeleton)
         AllBullets[i].setFillColor(sf::Color::Yellow);
         AllBullets[i].setPosition(AllBullets[i].getPosition() + bulletDirection * bulletSpeed * deltaTime);
 
+        if (Calc::CheckIsCollision(AllBullets[i].getGlobalBounds(), skeleton.sprite.getGlobalBounds()))
+        {
+            AllBullets.erase(AllBullets.begin() + i);
+            std::cout << "COLLISION DETECTED" << std::endl;
+        }
+
     }
+
+    //rectangle--
+    boundingRect.setPosition(sprite.getPosition());
 
     //BULLETS SHOOTING--------
 }

@@ -11,7 +11,7 @@ int main()
     settings.antialiasingLevel = 8;
 
     sf::RenderWindow window(sf::VideoMode(1080, 720), "GAME RPG HOWAK", sf::Style::Default,settings);
-    window.setFramerateLimit(360);
+    window.setFramerateLimit(240);
 
     Player player;
     player.Initialize();
@@ -21,10 +21,19 @@ int main()
 
     sf::Clock clock;
 
+    sf::Text FrameRateText;
+    sf::Font font;
+
     //---------------------------------------------INITIALIZE---------------------------------------------//
 
     //----------------------------------------------LOAD--------------------------------------------------//
    
+    if (font.loadFromFile("GameTrial/Assets/fonts/OldSansBlack.ttf"))
+    {
+        std::cout << "FONT LOADED" << std::endl;
+        FrameRateText.setFont(font);
+    }
+
     player.Load();
 
     skeleton.Load();
@@ -38,7 +47,15 @@ int main()
     {
         //clock----
         sf::Time deltaTimeTimer = clock.restart();
-        float deltaTime = deltaTimeTimer.asMilliseconds();
+        double deltaTime = deltaTimeTimer.asMicroseconds() / 1000.0f;
+        int rslt = 1000.0f / deltaTime;
+
+        FrameRateText.setCharacterSize(14);
+
+        // Update the FPS string
+        std::string fpsString = "FPS : \n" + std::to_string(rslt);
+        FrameRateText.setString(fpsString);
+
 
         // check all the window's events that were triggered since the last iteration of the loop
         sf::Event event;
@@ -63,6 +80,7 @@ int main()
 
         player.Draw(window);
 
+        window.draw(FrameRateText);
         window.display();
     //-------------------DRAW SECTION-------------------------------------------------------------------//
 

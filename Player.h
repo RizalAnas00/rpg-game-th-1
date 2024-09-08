@@ -7,11 +7,14 @@ class Player
 {
 private:
 	sf::Texture texture;
-	float speed = 0.2f; // Kecepatan default
+	float speed;
 
 	//--Bullets
 	std::vector<sf::RectangleShape> AllBullets;
-	float bulletSpeed = 0.8f;
+	float bulletSpeed;
+	float maxFireRate;
+	float fireRateTimer;
+
 	//--bullets
 
 	sf::RectangleShape boundingRect;
@@ -22,11 +25,13 @@ public:
 	sf::Sprite sprite;
 
 public:
+	Player();
+	~Player();
+
 	void Initialize();
 	void Load();
 	void Update(float deltaTime, Skeleton& skeleton);
 	void Draw(sf::RenderWindow& window);
 
-	Player() = default;
 };
 
